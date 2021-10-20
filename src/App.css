@@ -5,16 +5,44 @@
 .wrapper {
   height: 100vh;
   width: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+.cardboard-header {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-bottom: 10px;
+}
+
+.start-btn, .restart-btn {
+  background-color: cadetblue;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  font-size: 12px;
+}
+
+.start-btn:hover, .restart-btn:hover {
+  cursor: pointer;
+}
+
+.start-btn {
+  margin-left: 5px;
 }
 
 h1 {
   text-align: center;
 }
 
+.cardboard-wrapper {
+  width: 50%;
+  margin: 10px auto;
+}
+
 .cardboard {
   position: relative;
-  width: 50%;
-  margin: 40px auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 5px;

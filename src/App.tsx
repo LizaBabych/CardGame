@@ -8,25 +8,38 @@ interface ICard {
   id: number;
 }
 
-const randomCards = cards.sort(() => Math.random() - 0.5);
+const getRandomCards = () => {
+  return cards.sort(() => Math.random() - 0.5);
+};
 
 const App = () => {
-  const [isAllOpen, setAllOpen] = useState(true);
-  const [disabled, setDisabled] = useState(false);
+  const [isAllOpen, setAllOpen] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
   const [openedCard, setOpenedCard] = useState<Array<ICard>>([]);
   const [findCarts, setFindCart] = useState<Array<ICard>>([]);
 
   const [isGameEnd, setGameEnd] = useState(false);
 
+  const [randomCards, setRandomCards] = useState<Array<ICard>>([]);
+
   useEffect(() => {
-    setTimeout(() => {
-      setAllOpen(false);
-    }, 5000);
+    setRandomCards(getRandomCards());
   }, []);
 
   const checkSameCards = (cards: Array<ICard>) => {
     return cards[0].id === cards[1].id;
+  };
+
+  const restartGame = () => {
+    setRandomCards(getRandomCards());
+    setOpenedCard([]);
+    setFindCart([]);
+    setAllOpen(true);
+    setTimeout(() => {
+      setAllOpen(false);
+      setDisabled(false);
+    }, 5000);
   };
 
   const openCard = (card: ICard) => {
@@ -59,26 +72,33 @@ const App = () => {
   return (
     <div className="wrapper">
       <h1>Card Game</h1>
-      <div className="cardboard">
-        {randomCards.map((card) => {
-          const isOpen = isCardOpen(card);
-          return (
-            <div
-              className="card"
-              key={card.uid}
-              onClick={() => !isOpen && !disabled && openCard(card)}
-            >
-              {(isOpen || isAllOpen) && (
-                <img src={card.img} alt="card" width="60px" height="60px" />
-              )}
+      <div className="cardboard-wrapper">
+        <header className="cardboard-header">
+          <button className="restart-btn" onClick={restartGame}>
+            Restart
+          </button>
+        </header>
+        <div className="cardboard">
+          {randomCards.map((card) => {
+            const isOpen = isCardOpen(card);
+            return (
+              <div
+                className="card"
+                key={card.uid}
+                onClick={() => !isOpen && !disabled && openCard(card)}
+              >
+                {(isOpen || isAllOpen) && (
+                  <img src={card.img} alt="card" width="60px" height="60px" />
+                )}
+              </div>
+            );
+          })}
+          {isGameEnd && (
+            <div className="end-game">
+              <h2>You are WIN!!!</h2>
             </div>
-          );
-        })}
-        {isGameEnd && (
-          <div className="end-game">
-            <h2>You are WIN!!!</h2>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
